@@ -874,12 +874,12 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
 
             // set (add) CSS style on selected row
             $scope.setFocusStyle = function( tabIndex ) {                                
-                angular.element( formElements[ tabIndex ] ).parent().parent().parent().addClass( 'multiSelectFocus' );                        
+                // angular.element( formElements[ tabIndex ] ).parent().parent().parent().addClass( 'multiSelectFocus' );                        
             }
 
             // remove CSS style on selected row
             $scope.removeFocusStyle = function( tabIndex ) {                
-                angular.element( formElements[ tabIndex ] ).parent().parent().parent().removeClass( 'multiSelectFocus' );
+                // angular.element( formElements[ tabIndex ] ).parent().parent().parent().removeClass( 'multiSelectFocus' );
             }
 
             /*********************
@@ -946,7 +946,8 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
             $scope.icon.selectNone = '&times;';     // x icon
             $scope.icon.reset      = '&#8630;';     // undo icon            
             // this one is for the selected items
-            $scope.icon.tickMark   = '&#10003;';    // a tick icon 
+            // Removed tickMark icon as its not needed
+            // $scope.icon.tickMark = '';    // a tick icon
 
             // configurable button labels                       
             if ( typeof attrs.translation !== 'undefined' ) {
@@ -957,10 +958,10 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                 $scope.lang.nothingSelected = $sce.trustAsHtml( $scope.translation.nothingSelected );                
             }
             else {
-                $scope.lang.selectAll       = $sce.trustAsHtml( $scope.icon.selectAll  + '&nbsp;&nbsp;Select All' );                
-                $scope.lang.selectNone      = $sce.trustAsHtml( $scope.icon.selectNone + '&nbsp;&nbsp;Select None' );
-                $scope.lang.reset           = $sce.trustAsHtml( $scope.icon.reset      + '&nbsp;&nbsp;Reset' );
-                $scope.lang.search          = 'Search...';
+                $scope.lang.selectAll       = $sce.trustAsHtml( 'Select All' );                
+                $scope.lang.selectNone      = $sce.trustAsHtml( 'Select None' );
+                $scope.lang.reset           = $sce.trustAsHtml( 'Reset' );
+                $scope.lang.search          = 'Search';
                 $scope.lang.nothingSelected = 'None Selected';                
             }
             $scope.icon.tickMark = $sce.trustAsHtml( $scope.icon.tickMark );
@@ -1044,14 +1045,14 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     // container of the first 3 buttons, select all, none and reset
                     '<div class="line" ng-if="helperStatus.all || helperStatus.none || helperStatus.reset ">' +
                         // select all
-                        '<button type="button" class="helperButton"' +
+                        '<button type="button" class="helperButton selectall"' +
                             'ng-disabled="isDisabled"' + 
                             'ng-if="helperStatus.all"' +
                             'ng-click="select( \'all\', $event );"' +
                             'ng-bind-html="lang.selectAll">' +
                         '</button>'+
                         // select none
-                        '<button type="button" class="helperButton"' +
+                        '<button type="button" class="helperButton selectnone"' +
                             'ng-disabled="isDisabled"' + 
                             'ng-if="helperStatus.none"' +
                             'ng-click="select( \'none\', $event );"' +
@@ -1074,7 +1075,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                             'ng-change="searchChanged()" class="inputFilter"'+
                             '/>'+
                         // clear button
-                        '<button type="button" class="clearButton" ng-click="clearClicked( $event )" >×</button> '+
+                        '<button type="button" class="clearButton" ng-click="clearClicked( $event )" >Clear</button> '+
                     '</div> '+
                 '</div> '+
                 // selection items
@@ -1090,10 +1091,10 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     '<div class="acol">'+
                         '<label>'+                                
                             // input, so that it can accept focus on keyboard click
-                            '<input class="checkbox focusable" type="checkbox" '+
+                            '<input type="checkbox" style="display:none" class="checkbox" ' +
                                 'ng-disabled="itemIsDisabled( item )" '+
                                 'ng-checked="item[ tickProperty ]" '+
-                                'ng-click="syncItems( item, $event, $index )" />'+
+                                'ng-click="syncItems( item, $event, $index )" /><div class="checkbox" ></div>'+
                             // item label using ng-bind-hteml
                             '<span '+
                                 'ng-class="{disabled:itemIsDisabled( item )}" '+
@@ -1102,7 +1103,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         '</label>'+
                     '</div>'+
                     // the tick/check mark
-                    '<span class="tickMark" ng-if="item[ groupProperty ] !== true && item[ tickProperty ] === true" ng-bind-html="icon.tickMark"></span>'+
+                    '<div class="tickMark" ng-if="item[ groupProperty ] !== true && item[ tickProperty ] === true" ng-bind-html="icon.tickMark"></div>'+
                 '</div>'+
             '</div>'+
         '</div>'+
