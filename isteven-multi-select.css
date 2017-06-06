@@ -353,3 +353,25 @@
   max-height: 22px;
   max-width:22px;
 }
+
+.multiSelect .buttonContainer {
+  height: 40px;
+}
+
+.multiSelect .buttonContainer .btn {
+  width: 72px;
+  height: 32px;
+  float: right;
+  margin-right: 20px;
+}
+
+.multiSelect .buttonContainer .btn-primary {
+  width: 72px;
+}
+
+.multiSelect .buttonContainer .btn-cancel {
+  width: 86px;
+  background-color: #ffffff;
+  border: 1px solid #5BC5D0;
+  color: #5BC5D0;
+}
