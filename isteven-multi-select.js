@@ -46,10 +46,12 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
 
             // settings based on attribute
             isDisabled      : '=',
+            hideReset       : '=',
 
             // callbacks
             onClear         : '&',  
             onClose         : '&',
+            onApply         : '&',
             onSearchChange  : '&',  
             onItemClick     : '&',            
             onOpen          : '&', 
@@ -607,12 +609,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                 // His version is awesome if you need a more simple multi-select approach.                                
 
                 // close
-                if ( angular.element( checkBoxLayer ).hasClass( 'show' )) {                         
-
-                    angular.element( checkBoxLayer ).removeClass( 'show' );                    
-                    angular.element( clickedEl ).removeClass( 'buttonClicked' );                    
-                    angular.element( document ).off( 'click', $scope.externalClickListener );
-                    angular.element( document ).off( 'keydown', $scope.keyboardListener );                                    
+                if ( angular.element( checkBoxLayer ).hasClass( 'show' )) {                                                          
 
                     // clear the focused element;
                     $scope.removeFocusStyle( $scope.tabIndex );
@@ -621,12 +618,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     }
 
                     // close callback
-                    $timeout( function() {
-                        $scope.onClose();
-                    }, 0 );
-
-                    // set focus on button again
-                    element.children().children()[ 0 ].focus();
+                    $scope.cancel(e);
                 } 
                 // open
                 else                 
@@ -693,21 +685,45 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     if ( e.target == targetsArr[i] ) {
                         return;
                     }
-                }
-
-                angular.element( checkBoxLayer.previousSibling ).removeClass( 'buttonClicked' );                    
-                angular.element( checkBoxLayer ).removeClass( 'show' );
-                angular.element( document ).off( 'click', $scope.externalClickListener ); 
-                angular.element( document ).off( 'keydown', $scope.keyboardListener );                
+                }            
                 
                 // close callback                
-                $timeout( function() {
+                $scope.cancel(e);
+            };
+
+            $scope.cancel = function(e) {
+                angular.element(checkBoxLayer.previousSibling).removeClass('buttonClicked');
+                angular.element(checkBoxLayer).removeClass('show');
+                angular.element(document).off('click', $scope.externalClickListener);
+                angular.element(document).off('keydown', $scope.keyboardListener);
+
+                // close callback
+                $timeout(function () {
+                    $scope.select('RESET', e);
                     $scope.onClose();
-                }, 0 );
+                }, 0);
 
                 // set focus on button again
-                element.children().children()[ 0 ].focus();
-            }
+                element.children().children()[0].focus();
+            };
+
+            $scope.apply = function(e) {
+                // Save new backup
+                $scope.backUp = angular.copy($scope.inputModel);
+
+                angular.element(checkBoxLayer.previousSibling).removeClass('buttonClicked');
+                angular.element(checkBoxLayer).removeClass('show');
+                angular.element(document).off('click', $scope.externalClickListener);
+                angular.element(document).off('keydown', $scope.keyboardListener);
+
+                // close callback
+                $timeout(function () {
+                    $scope.onApply();
+                }, 0);
+
+                // set focus on button again
+                element.children().children()[0].focus();
+            };
    
             // select All / select None / reset buttons
             $scope.select = function( type, e ) {
@@ -959,7 +975,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
             }
             else {
                 $scope.lang.selectAll       = $sce.trustAsHtml( 'Select All' );                
-                $scope.lang.selectNone      = $sce.trustAsHtml( 'Select None' );
+                $scope.lang.selectNone      = $sce.trustAsHtml( 'Deselect All' );
                 $scope.lang.reset           = $sce.trustAsHtml( 'Reset' );
                 $scope.lang.search          = 'Search';
                 $scope.lang.nothingSelected = 'None Selected';                
@@ -1059,7 +1075,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                             'ng-bind-html="lang.selectNone">' +
                         '</button>'+
                         // reset
-                        '<button type="button" class="helperButton reset"' +
+                        '<button ng-hide="hideReset" type="button" class="helperButton reset"' +
                             'ng-disabled="isDisabled"' + 
                             'ng-if="helperStatus.reset"' +
                             'ng-click="select( \'reset\', $event );"' +
@@ -1106,6 +1122,10 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     '<div class="tickMark" ng-if="item[ groupProperty ] !== true && item[ tickProperty ] === true" ng-bind-html="icon.tickMark"></div>'+
                 '</div>'+
             '</div>'+
+            '<div class="buttonContainer">' +
+                '<button class="btn btn-primary" ng-click="apply($event)">Apply</button>' +
+                '<button class="btn btn-cancel" ng-click="cancel($event)">Cancel</button>' +
+            '</div>' +
         '</div>'+
     '</span>';
 	$templateCache.put( 'isteven-multi-select.htm' , template );
