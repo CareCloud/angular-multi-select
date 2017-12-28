@@ -967,6 +967,9 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
 
             // configurable button labels                       
             if ( typeof attrs.translation !== 'undefined' ) {
+                $scope.lang.apply           = $scope.translation.apply;                
+                $scope.lang.cancel          = $scope.translation.cancel;                
+                $scope.lang.clear           = $scope.translation.clear;                
                 $scope.lang.selectAll       = $sce.trustAsHtml( $scope.icon.selectAll  + '&nbsp;&nbsp;' + $scope.translation.selectAll );
                 $scope.lang.selectNone      = $sce.trustAsHtml( $scope.icon.selectNone + '&nbsp;&nbsp;' + $scope.translation.selectNone );
                 $scope.lang.reset           = $sce.trustAsHtml( $scope.icon.reset      + '&nbsp;&nbsp;' + $scope.translation.reset );
@@ -974,6 +977,9 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                 $scope.lang.nothingSelected = $sce.trustAsHtml( $scope.translation.nothingSelected );                
             }
             else {
+                $scope.lang.apply           = 'Apply';
+                $scope.lang.cancel          = 'Cancel';
+                $scope.lang.clear           = 'Clear';
                 $scope.lang.selectAll       = $sce.trustAsHtml( 'Select All' );                
                 $scope.lang.selectNone      = $sce.trustAsHtml( 'Deselect All' );
                 $scope.lang.reset           = $sce.trustAsHtml( 'Reset' );
@@ -1091,7 +1097,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                             'ng-change="searchChanged()" class="inputFilter"'+
                             '/>'+
                         // clear button
-                        '<button type="button" class="clearButton" ng-click="clearClicked( $event )" >Clear</button> '+
+                        '<button type="button" class="clearButton" ng-click="clearClicked( $event )" >{{lang.clear}}</button> '+
                     '</div> '+
                 '</div> '+
                 // selection items
@@ -1123,8 +1129,8 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                 '</div>'+
             '</div>'+
             '<div class="buttonContainer">' +
-                '<button class="btn btn-primary" ng-click="apply($event)">Apply</button>' +
-                '<button class="btn btn-cancel" ng-click="cancel($event)">Cancel</button>' +
+                '<button class="btn btn-primary" ng-click="apply($event)">{{lang.apply}}</button>' +
+                '<button class="btn btn-cancel" ng-click="cancel($event)">{{lang.cancel}}</button>' +
             '</div>' +
         '</div>'+
     '</span>';

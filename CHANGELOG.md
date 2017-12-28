@@ -1,3 +1,7 @@
+### v4.0.1
+##### Added / Updated
+- Supporting of translations for all labels
+
 ### v4.0.0
 ##### Added / Updated
 - You can now customize output-model properties that you need, instead of having all data.
