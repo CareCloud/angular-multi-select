@@ -1028,7 +1028,22 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
             $scope.$watch( 'isDisabled' , function( newVal ) {         
                 $scope.isDisabled = newVal;                               
             });            
-            
+
+            // watch for changes in translatations
+            $scope.$watch( 'translation' , function( newVal ) {
+                $scope.lang = {
+                apply: $scope.translation.apply,
+                cancel: $scope.translation.cancel,
+                clear: $scope.translation.clear,
+                selectAll: $sce.trustAsHtml( $scope.icon.selectAll  + '&nbsp;&nbsp;' + $scope.translation.selectAll ),
+                selectNone: $sce.trustAsHtml( $scope.icon.selectNone + '&nbsp;&nbsp;' + $scope.translation.selectNone ),
+                reset: $sce.trustAsHtml( $scope.icon.reset      + '&nbsp;&nbsp;' + $scope.translation.reset ),
+                search: $scope.translation.search,
+                nothingSelected: $sce.trustAsHtml( $scope.translation.nothingSelected )
+                };
+                $scope.varButtonLabel = $scope.lang.nothingSelected;
+            });
+
             // this is for touch enabled devices. We don't want to hide checkboxes on scroll. 
             var onTouchStart = function( e ) { 
             	$scope.$apply( function() {

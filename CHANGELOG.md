@@ -1,3 +1,6 @@
+### v4.0.2
+##### Added / Updated
+- Refreshing of translations for all labels
 ### v4.0.1
 ##### Added / Updated
 - Supporting of translations for all labels
